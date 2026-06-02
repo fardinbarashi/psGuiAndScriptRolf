@@ -91,7 +91,7 @@ The application uses WMI for remote operations.
 
 # 🖥️ PsGuiRolf - Win11
 ```
-`PsGuiRolf - Win11` is the next-generation WPF-based GUI application for managing local and remote Windows user profiles.
+`PsGuiRolf - Win11` is the next-generation GUI where we go from WPF to XAML GUI application for managing local and remote Windows user profiles.
 - XAML interface
 - CIM operations
 - WSMan → DCOM fallback
