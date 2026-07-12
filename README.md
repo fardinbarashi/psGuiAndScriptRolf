@@ -1,5 +1,7 @@
 # Windows Profile Cleanup Tools
 
+![](Assets/logo.png)
+
 ## Overview
 This repository contains four PowerShell-based tools for managing and removing inactive local Windows user profiles.
 These tools are designed for IT administrators who manage shared workstations, lab environments, terminal servers, or enterprise devices where inactive profiles consume unnecessary disk space.
