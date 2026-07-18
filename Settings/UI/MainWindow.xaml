@@ -1,0 +1,378 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Rolf" Height="900" Width="1600" MinHeight="560" MinWidth="1080"
+        WindowStartupLocation="CenterScreen" Background="#FFF4F5F7"
+        FontFamily="Segoe UI" FontSize="13" TextOptions.TextFormattingMode="Display">
+
+  <Window.Resources>
+    <!-- Palette (light) -->
+    <SolidColorBrush x:Key="Bg"          Color="#FFF4F5F7"/>
+    <SolidColorBrush x:Key="Card"        Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="CardAlt"     Color="#FFF8F9FB"/>
+    <SolidColorBrush x:Key="Border"      Color="#FFE2E5EA"/>
+    <SolidColorBrush x:Key="BorderStrong" Color="#FFD0D5DD"/>
+    <SolidColorBrush x:Key="Text"        Color="#FF1F2329"/>
+    <SolidColorBrush x:Key="Muted"       Color="#FF6B7280"/>
+    <SolidColorBrush x:Key="Accent"      Color="#FF2563EB"/>
+    <SolidColorBrush x:Key="AccentHover" Color="#FF1D4ED8"/>
+    <SolidColorBrush x:Key="Danger"      Color="#FFDC2626"/>
+    <SolidColorBrush x:Key="DangerHover" Color="#FFB91C1C"/>
+    <SolidColorBrush x:Key="Warn"        Color="#FFB45309"/>
+    <SolidColorBrush x:Key="GoodChip"    Color="#FFEFF4FF"/>
+
+    <!-- Section header -->
+    <Style x:Key="Section" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Margin" Value="0,14,0,6"/>
+    </Style>
+
+    <!-- Primary / accent button -->
+    <Style x:Key="BtnPrimary" TargetType="Button">
+      <Setter Property="Background" Value="{StaticResource Accent}"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Padding" Value="12,8"/>
+      <Setter Property="Margin" Value="0,0,0,0"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="6"
+                    Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+              <Border.Effect>
+                <DropShadowEffect Color="#FF2563EB" BlurRadius="8" ShadowDepth="1" Opacity="0.28"/>
+              </Border.Effect>
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="b" Property="Background" Value="{StaticResource AccentHover}"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="b" Property="RenderTransform">
+                  <Setter.Value><TranslateTransform Y="1"/></Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="b" Property="Opacity" Value="0.5"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- Secondary button: white fill, clear border + soft shadow (reads as a real button) -->
+    <Style x:Key="BtnGhost" TargetType="Button">
+      <Setter Property="Background" Value="{StaticResource Card}"/>
+      <Setter Property="Foreground" Value="{StaticResource Text}"/>
+      <Setter Property="Padding" Value="12,8"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="6"
+                    BorderBrush="{StaticResource BorderStrong}" BorderThickness="1"
+                    Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+              <Border.Effect>
+                <DropShadowEffect Color="#FF000000" BlurRadius="5" ShadowDepth="1" Opacity="0.12"/>
+              </Border.Effect>
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="b" Property="Background" Value="#FFEEF2F8"/>
+                <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Accent}"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="b" Property="Background" Value="#FFE3E9F2"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="b" Property="Opacity" Value="0.5"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- Danger button -->
+    <Style x:Key="BtnDanger" TargetType="Button" BasedOn="{StaticResource BtnPrimary}">
+      <Setter Property="Background" Value="{StaticResource Danger}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="6"
+                    Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+              <Border.Effect>
+                <DropShadowEffect Color="#FFDC2626" BlurRadius="8" ShadowDepth="1" Opacity="0.30"/>
+              </Border.Effect>
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="b" Property="Background" Value="{StaticResource DangerHover}"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="b" Property="Opacity" Value="0.5"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- TextBox -->
+    <Style TargetType="TextBox">
+      <Setter Property="Background" Value="{StaticResource Card}"/>
+      <Setter Property="Foreground" Value="{StaticResource Text}"/>
+      <Setter Property="CaretBrush" Value="{StaticResource Text}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource BorderStrong}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="8,7"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TextBox">
+            <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+              <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style TargetType="Label">
+      <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+      <Setter Property="Padding" Value="0,0,0,3"/>
+    </Style>
+    <Style TargetType="TextBlock"><Setter Property="Foreground" Value="{StaticResource Text}"/></Style>
+    <Style TargetType="CheckBox">
+      <Setter Property="Foreground" Value="{StaticResource Text}"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <!-- DataGrid (light) -->
+    <Style TargetType="DataGrid">
+      <Setter Property="Background" Value="{StaticResource Card}"/>
+      <Setter Property="Foreground" Value="{StaticResource Text}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="RowBackground" Value="{StaticResource Card}"/>
+      <Setter Property="AlternatingRowBackground" Value="#FFFAFBFC"/>
+      <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+      <Setter Property="HorizontalGridLinesBrush" Value="#FFEDEFF2"/>
+      <Setter Property="HeadersVisibility" Value="Column"/>
+      <Setter Property="RowHeaderWidth" Value="0"/>
+      <Setter Property="AutoGenerateColumns" Value="False"/>
+      <Setter Property="CanUserAddRows" Value="False"/>
+      <Setter Property="CanUserDeleteRows" Value="False"/>
+      <Setter Property="SelectionMode" Value="Extended"/>
+      <Setter Property="SelectionUnit" Value="FullRow"/>
+      <Setter Property="RowHeight" Value="30"/>
+    </Style>
+    <Style TargetType="DataGridColumnHeader">
+      <Setter Property="Background" Value="{StaticResource CardAlt}"/>
+      <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Padding" Value="10,9"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Border}"/>
+      <Setter Property="BorderThickness" Value="0,0,0,1"/>
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+    <Style TargetType="DataGridCell">
+      <Setter Property="Foreground" Value="{StaticResource Text}"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Padding" Value="10,0"/>
+      <Style.Triggers>
+        <Trigger Property="IsSelected" Value="True">
+          <Setter Property="Background" Value="#FFDCE8FF"/>
+          <Setter Property="Foreground" Value="{StaticResource Text}"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+    <Style TargetType="DataGridRow">
+      <Setter Property="Background" Value="Transparent"/>
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Protected}" Value="True">
+          <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+        </DataTrigger>
+        <DataTrigger Binding="{Binding Loaded}" Value="True">
+          <Setter Property="Foreground" Value="{StaticResource Warn}"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="320"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="280"/>
+    </Grid.ColumnDefinitions>
+
+    <!-- ============================ SIDEBAR ============================ -->
+    <Border Grid.Row="0" Grid.Column="0" Background="{StaticResource Card}"
+            BorderBrush="{StaticResource Border}" BorderThickness="0,0,1,0">
+      <DockPanel Margin="18,18,18,18">
+
+        <!-- Title -->
+        <StackPanel DockPanel.Dock="Top">
+          <TextBlock Text="Rolf" FontSize="24" FontWeight="Bold"/>
+          <TextBlock Text="Profile cleanup tool" Foreground="{StaticResource Muted}" Margin="0,1,0,0"/>
+          <TextBlock x:Name="AdminBadge" Text="" Foreground="{StaticResource Warn}" FontSize="11"
+                     Margin="0,6,0,0" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Statistics pinned to bottom -->
+        <Border DockPanel.Dock="Bottom" Background="{StaticResource CardAlt}" CornerRadius="8"
+                BorderBrush="{StaticResource Border}" BorderThickness="1" Padding="14" Margin="0,14,0,0">
+          <StackPanel>
+            <TextBlock Text="Statistics" FontWeight="Bold" Margin="0,0,0,8"/>
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                <RowDefinition/><RowDefinition/><RowDefinition/>
+              </Grid.RowDefinitions>
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="Computer"      Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Row="0" Grid.Column="1" x:Name="StatComputer" Text="-" FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="Profiles found" Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Row="1" Grid.Column="1" x:Name="StatTotal"    Text="0" FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="Inactive"       Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Row="2" Grid.Column="1" x:Name="StatInactive" Text="0" FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="3" Grid.Column="0" Text="In use"         Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Row="3" Grid.Column="1" x:Name="StatLoaded"   Text="0" FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="4" Grid.Column="0" Text="Protected"      Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Row="4" Grid.Column="1" x:Name="StatProtected" Text="0" FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="5" Grid.Column="0" Text="Selected"       Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Row="5" Grid.Column="1" x:Name="StatSelected" Text="0" FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="6" Grid.Column="0" Text="Selected size"  Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Row="6" Grid.Column="1" x:Name="StatSize"     Text="-" FontWeight="SemiBold"/>
+            </Grid>
+            <Separator Margin="0,8" Background="{StaticResource Border}"/>
+            <TextBlock x:Name="StatElapsed" Text="Elapsed: -" Foreground="{StaticResource Muted}" FontSize="11"/>
+            <TextBlock x:Name="StatLog" Text="" Foreground="{StaticResource Muted}" FontSize="11"
+                       TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Scrollable controls -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Margin="0,4,4,0">
+
+            <TextBlock Text="TARGET" Style="{StaticResource Section}"/>
+            <Label Content="Computer"/>
+            <TextBox x:Name="TxtComputer"/>
+            <Grid Margin="0,8,0,0">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <Button Grid.Column="0" x:Name="BtnLocal"   Content="Use local"     Style="{StaticResource BtnGhost}"/>
+              <Button Grid.Column="2" x:Name="BtnConnect" Content="Scan profiles" Style="{StaticResource BtnPrimary}"/>
+            </Grid>
+
+            <TextBlock Text="FILTER" Style="{StaticResource Section}"/>
+            <Label Content="Inactive more than (days)"/>
+            <TextBox x:Name="TxtDays" Text="180" MaxLength="6"/>
+            <Label Content="Search filter (user / path / SID)" Margin="0,8,0,0"/>
+            <TextBox x:Name="TxtFilter" ToolTip="Type to filter the list by user name, profile path or SID"/>
+            <CheckBox x:Name="ChkOnlyInactive" Content="Show only inactive profiles" Margin="0,10,0,0"/>
+
+            <TextBlock Text="SELECT" Style="{StaticResource Section}"/>
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <Button Grid.Column="0" x:Name="BtnSelectInactive" Content="Inactive" Style="{StaticResource BtnGhost}"/>
+              <Button Grid.Column="2" x:Name="BtnSelectAll"      Content="All"      Style="{StaticResource BtnGhost}"/>
+            </Grid>
+            <Button x:Name="BtnClear" Content="Clear list" Style="{StaticResource BtnGhost}" Margin="0,8,0,0"/>
+          </StackPanel>
+        </ScrollViewer>
+      </DockPanel>
+    </Border>
+
+    <!-- ============================ RESULTS ============================ -->
+    <Grid Grid.Row="0" Grid.Column="1" Margin="18">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <DockPanel Grid.Row="0" Margin="0,0,0,12">
+        <TextBlock Text="Profiles" FontSize="20" FontWeight="Bold" DockPanel.Dock="Left"/>
+        <TextBlock x:Name="ResultCount" Text="0 profile(s)" Foreground="{StaticResource Muted}"
+                   HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+      </DockPanel>
+
+      <Border Grid.Row="1" Background="{StaticResource Card}" CornerRadius="10"
+              BorderBrush="{StaticResource Border}" BorderThickness="1" ClipToBounds="True">
+        <DataGrid x:Name="Grid">
+          <DataGrid.Columns>
+            <DataGridCheckBoxColumn Header="" Width="40"
+                Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <DataGridTextColumn Header="User"      Width="*"   Binding="{Binding UserName}"   IsReadOnly="True"/>
+            <DataGridTextColumn Header="Path"      Width="2*"  Binding="{Binding LocalPath}"  IsReadOnly="True"/>
+            <DataGridTextColumn Header="Last use"  Width="110" Binding="{Binding LastUseTime}" IsReadOnly="True"/>
+            <DataGridTextColumn Header="Days idle" Width="85"  Binding="{Binding InactiveDays}" IsReadOnly="True"/>
+            <DataGridCheckBoxColumn Header="In use" Width="60" Binding="{Binding Loaded}"     IsReadOnly="True"/>
+            <DataGridTextColumn Header="Size"      Width="90"  Binding="{Binding SizeText}"   IsReadOnly="True"/>
+            <DataGridTextColumn Header="SID"       Width="2*"  Binding="{Binding Sid}"        IsReadOnly="True"/>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Border>
+    </Grid>
+
+    <!-- ============================ ACTIONS (right container) ============================ -->
+    <Border Grid.Row="0" Grid.Column="2" Background="{StaticResource Card}"
+            BorderBrush="{StaticResource Border}" BorderThickness="1,0,0,0">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="18,18,18,18">
+          <TextBlock Text="Actions" FontSize="18" FontWeight="Bold"/>
+
+          <TextBlock Text="DATA" Style="{StaticResource Section}"/>
+          <Grid>
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+            <Button Grid.Column="0" x:Name="BtnSizes"  Content="Calc sizes" Style="{StaticResource BtnGhost}"/>
+            <Button Grid.Column="2" x:Name="BtnExport" Content="Export..."  Style="{StaticResource BtnGhost}"/>
+          </Grid>
+          <Button x:Name="BtnOpen" Content="Open Users folder" Style="{StaticResource BtnGhost}" Margin="0,8,0,0"/>
+
+          <TextBlock Text="MACHINE TOOLS" Style="{StaticResource Section}"/>
+          <Button x:Name="BtnPing"   Content="Ping"             Style="{StaticResource BtnGhost}"/>
+          <Button x:Name="BtnLogoff" Content="Log off all users" Style="{StaticResource BtnGhost}" Margin="0,8,0,0"/>
+          <Button x:Name="BtnReboot" Content="Reboot machine"    Style="{StaticResource BtnGhost}" Margin="0,8,0,0"/>
+
+          <TextBlock Text="DELETE" Style="{StaticResource Section}"/>
+          <CheckBox x:Name="WhatIf" Content="What-if (simulate, no deletion)" IsChecked="True" Margin="0,0,0,8"/>
+          <Button x:Name="BtnDelete" Content="Delete selected profiles" Style="{StaticResource BtnDanger}"/>
+        </StackPanel>
+      </ScrollViewer>
+    </Border>
+
+    <!-- ============================ STATUS BAR ============================ -->
+    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource Card}"
+            BorderBrush="{StaticResource Border}" BorderThickness="0,1,0,0" Padding="16,8">
+      <DockPanel>
+        <TextBlock x:Name="HostHint" Text="" Foreground="{StaticResource Muted}" DockPanel.Dock="Right"
+                   VerticalAlignment="Center" Margin="12,0,0,0"/>
+        <ProgressBar x:Name="Progress" Width="180" Height="6" Minimum="0" Maximum="100" Value="0"
+                     DockPanel.Dock="Right" VerticalAlignment="Center"
+                     Background="#FFE9ECF1" Foreground="{StaticResource Accent}" BorderThickness="0"/>
+        <TextBlock x:Name="Status" Text="Ready" VerticalAlignment="Center"/>
+      </DockPanel>
+    </Border>
+  </Grid>
+</Window>
