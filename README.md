@@ -16,7 +16,7 @@ Deleting a profile permanently removes:
 ## News :
 ### 1.1
 ```
-Better code in the man script
+Better code in the main script
 ```
 
 ## System requirements :
