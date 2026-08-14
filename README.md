@@ -3,7 +3,7 @@
 ![](githubRepoContentDeleteIfYouWant/img/logo.png)
 
 ## Overview
-This repository contains four PowerShell-based tools for managing and removing inactive local Windows user profiles.
+This repository contains two PowerShell-based tools (one GUI, one CLI) for managing and removing inactive local Windows user profiles.
 These tools are designed for IT administrators who manage shared workstations, lab environments, terminal servers, or enterprise devices where inactive profiles consume unnecessary disk space.
 
 ## ⚠️ Warning
@@ -14,7 +14,7 @@ Deleting a profile permanently removes:
 * Registry profile entries
 
 ## News :
-### 1.1
+### 1.2
 ```
 Better code in the main script
 ```
@@ -22,8 +22,9 @@ Better code in the main script
 ## System requirements :
 ### Runtime
 ```
-PowerShell 5
-Permissions : Administrator
+GUI (PsGuiRolf) : Windows PowerShell 5.1 or PowerShell 7+
+CLI (PsRolfCli) : PowerShell 7.0 or later (requires -Version 7.0)
+Permissions     : Administrator
 Remote operations require WinRM (WSMan) or DCOM/WMI access and rights.
 ```
 ---
@@ -31,17 +32,17 @@ Remote operations require WinRM (WSMan) or DCOM/WMI access and rights.
 
 The scripts are divided into:
 ```
-- GUI versions (PsGuiRolf) for interactive administration.
+- GUI version (PsGuiRolf) for interactive administration.
   XAML GUI for local and remote profile cleanup
-  Windows PowerShell : 7
+  Windows PowerShell : 5.1 or 7+
   Permissions : Administrator 
   Runs on win 11, Remove related registry entries under: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList 
   CLI Parameter - Option change
   $DaysFilterAccounts = (Get-Date).AddDays(-180)
 
-- CLI versions (PsRolf) for automated or scheduled execution : 
+- CLI version (PsRolfCli) for automated or scheduled execution : 
   Modern CIM-based inactive profile cleanup ( CIM-based profile management )
-  Windows PowerShell : 7
+  Windows PowerShell : 7.0 or later
   Permissions : Administrator 
   Runs on win 11, Remove related registry entries under: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
   - Default exclusions:
