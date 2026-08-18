@@ -7,7 +7,7 @@ function Write-ActionLog {
         Sid      = $Sid
         Path     = $Path
         Result   = $Result
-        Whatif   = [bool]$WhatIf.IsChecked
+        WhatIf   = [bool]$WhatIf.IsChecked
         RunAs    = $env:USERNAME
     } | Export-Csv -Path $Script:ActionLog -Append -NoTypeInformation -Encoding UTF8
 }
