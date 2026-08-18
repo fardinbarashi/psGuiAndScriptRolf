@@ -12,13 +12,13 @@ function Remove-Selected {
         return
     }
 
-    $dry  = [bool]$WhatIf.IsChecked
-    $verb = if ($dry) { 'simulate removal of' } else { 'PERMANENTLY DELETE' }
+    $whatIfMode  = [bool]$WhatIf.IsChecked
+    $verb = if ($whatIfMode) { 'simulate removal of' } else { 'PERMANENTLY DELETE' }
     $msg  = "About to $verb $($deletable.Count) profile(s) on $($Script:Computer)."
     if ($blocked.Count) { $msg += "`n$($blocked.Count) protected profile(s) will be skipped." }
     $msg += "`n`nContinue?"
     $answer = [System.Windows.MessageBox]::Show($msg, $Script:AppName, 'YesNo',
-                ($(if ($dry) { 'Question' } else { 'Warning' })))
+                ($(if ($whatIfMode) { 'Question' } else { 'Warning' })))
     if ($answer -ne 'Yes') { Set-Status "Cancelled."; return }
 
     $session = $null
@@ -30,12 +30,12 @@ function Remove-Selected {
         foreach ($p in $deletable) {
             $i++; Set-Progress ([int](100*$i/$deletable.Count)); Set-Status "Removing $($p.UserName) ..."
             try {
-                if (-not $dry) {
+                if (-not $whatIfMode) {
                     $q = @{ ClassName = 'Win32_UserProfile'; Filter = "SID='$($p.Sid)'"; ErrorAction = 'Stop' }
                     if ($session) { $q.CimSession = $session }
                     Get-CimInstance @q | Remove-CimInstance -ErrorAction Stop
                 }
-                Write-ActionLog -Action 'RemoveProfile' -Target $Script:Computer -Sid $p.Sid -Path $p.LocalPath -Result $(if ($dry) {'DryRun-OK'} else {'Deleted'})
+                Write-ActionLog -Action 'RemoveProfile' -Target $Script:Computer -Sid $p.Sid -Path $p.LocalPath -Result $(if ($whatIfMode) {'WhatIf-OK'} else {'Deleted'})
                 $ok++
             } catch {
                 Write-ActionLog -Action 'RemoveProfile' -Target $Script:Computer -Sid $p.Sid -Path $p.LocalPath -Result "ERROR: $($_.Exception.Message)"
@@ -44,7 +44,7 @@ function Remove-Selected {
     } finally { if ($session) { Remove-CimSession $session -ErrorAction SilentlyContinue } }
 
     Set-Progress 0
-    $word = if ($dry) { 'simulated' } else { 'removed' }
+    $word = if ($whatIfMode) { 'simulated' } else { 'removed' }
     Set-Status "$ok of $($deletable.Count) profile(s) $word.  Log: $(Split-Path $Script:ActionLog -Leaf)"
-    if (-not $dry) { Invoke-Scan } else { Update-Summary }
+    if (-not $whatIfMode) { Invoke-Scan } else { Update-Summary }
 }
